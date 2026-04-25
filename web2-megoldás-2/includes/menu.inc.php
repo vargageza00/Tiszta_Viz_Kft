@@ -4,13 +4,36 @@ Class Menu {
     public static $menu = array();
     
     public static function setMenu() {
-        self::$menu = array();
-        $connection = Database::getConnection();
-        $stmt = $connection->query("select url, nev, szulo, jogosultsag from menu where jogosultsag like '".$_SESSION['userlevel']."'order by sorrend");
-        while($menuitem = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            self::$menu[$menuitem['url']] = array($menuitem['nev'], $menuitem['szulo'], $menuitem['jogosultsag']);
-        }
+    self::$menu = array();
+    $connection = Database::getConnection();
+
+    if ($_SESSION['userid'] > 0) {
+        // BEJELENTKEZETT: látja a 000 és 111 menüpontokat is
+        $stmt = $connection->query(
+            "SELECT url, nev, szulo, jogosultsag 
+             FROM menu 
+             WHERE jogosultsag IN ('000', '111')
+             ORDER BY sorrend"
+        );
+    } else {
+        // VENDÉG: csak a 000 menüpontokat látja
+        $stmt = $connection->query(
+            "SELECT url, nev, szulo, jogosultsag 
+             FROM menu 
+             WHERE jogosultsag = '000'
+             ORDER BY sorrend"
+        );
     }
+
+    while($menuitem = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        self::$menu[$menuitem['url']] = array(
+            $menuitem['nev'], 
+            $menuitem['szulo'], 
+            $menuitem['jogosultsag']
+        );
+    }
+    }   
+
 
     public static function getMenu($sItems) {
         $submenu = "";

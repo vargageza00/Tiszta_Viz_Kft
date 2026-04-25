@@ -25,6 +25,7 @@ class Beleptet_Model
 						$_SESSION['userid'] =  $felhasznalo[0]['id'];
 						$_SESSION['userlastname'] =  $felhasznalo[0]['csaladi_nev'];
 						$_SESSION['userfirstname'] =  $felhasznalo[0]['utonev'];
+						$_SESSION['loginname'] = $felhasznalo[0]['bejelentkezes'];
 						$_SESSION['userlevel'] = $felhasznalo[0]['jogosultsag'];
 						Menu::setMenu();
 					}
