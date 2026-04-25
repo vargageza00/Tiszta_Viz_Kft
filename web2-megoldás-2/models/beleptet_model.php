@@ -2,50 +2,60 @@
 
 class Beleptet_Model
 {
-	public function get_data($vars)
-	{
-		$retData['eredmeny'] = "";
-		try {
-			$connection = Database::getConnection();
-			$sql = "select id, csaladi_nev, utonev, jelszo, jogosultsag from felhasznalok where bejelentkezes='".$vars['login']."'";
-			$stmt = $connection->query($sql);
-			$felhasznalo = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			switch(count($felhasznalo)) {
-				case 0:
-					$retData['eredmeny'] = "ERROR";
-					$retData['uzenet'] = "Helytelen felhasználói név-jelszó pár!";
-					break;
-				case 1:
-					if(password_verify($vars['password'], $felhasznalo[0]['jelszo']))
-					{
-						$retData['eredmeny'] = "OK";
-						$retData['uzenet'] = "Kedves ".$felhasznalo[0]['csaladi_nev']." ".$felhasznalo[0]['utonev']."!<br><br>
-											  Jó munkát kívánunk rendszerünkkel.<br><br>
-											  Az üzemeltetők";
-						$_SESSION['userid'] =  $felhasznalo[0]['id'];
-						$_SESSION['userlastname'] =  $felhasznalo[0]['csaladi_nev'];
-						$_SESSION['userfirstname'] =  $felhasznalo[0]['utonev'];
-						$_SESSION['loginname'] = $felhasznalo[0]['bejelentkezes'];
-						$_SESSION['userlevel'] = $felhasznalo[0]['jogosultsag'];
-						Menu::setMenu();
-					}
-					else
-					{
-						$retData['eredmeny'] = "ERROR";
-						$retData['uzenet'] = "Helytelen felhasználói név-jelszó pár!";
-					}
-					break;
-				default:
-					$retData['eredmeny'] = "ERROR";
-					$retData['uzenet'] = "Több felhasználót találtunk a megadott felhasználói név -jelszó párral!";
-			}
-		}
-		catch (PDOException $e) {
-					$retData['eredmeny'] = "ERROR";
-					$retData['uzenet'] = "Adatbázis hiba: ".$e->getMessage()."!";
-		}
-		return $retData;
-	}
+    public function get_data($vars)
+    {
+        $retData = ['eredmeny' => ''];
+
+        try {
+            $connection = Database::getConnection();
+
+            // BIZTONSÁGOS SQL – prepared statement
+            $sql = "SELECT id, csaladi_nev, utonev, bejelentkezes, jelszo, jogosultsag 
+                    FROM felhasznalok 
+                    WHERE bejelentkezes = ?";
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute([$vars['login']]);
+            $felhasznalo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Nincs ilyen felhasználó
+            if (!$felhasznalo) {
+                $retData['eredmeny'] = "ERROR";
+                $retData['uzenet'] = "Helytelen felhasználónév vagy jelszó!";
+                return $retData;
+            }
+
+            // Jelszó ellenőrzése
+            if (!password_verify($vars['password'], $felhasznalo['jelszo'])) {
+                $retData['eredmeny'] = "ERROR";
+                $retData['uzenet'] = "Helytelen felhasználónév vagy jelszó!";
+                return $retData;
+            }
+
+            // Sikeres bejelentkezés → SESSION beállítása
+            $_SESSION['userid']        = $felhasznalo['id'];
+            $_SESSION['userlastname']  = $felhasznalo['csaladi_nev'];
+            $_SESSION['userfirstname'] = $felhasznalo['utonev'];
+            $_SESSION['loginname']     = $felhasznalo['bejelentkezes'];
+            $_SESSION['userlevel']     = $felhasznalo['jogosultsag'];
+
+            // Menü frissítése
+            Menu::setMenu();
+
+            // Üzenet
+            $retData['eredmeny'] = "OK";
+            $retData['uzenet'] =
+                "Kedves ".$felhasznalo['csaladi_nev']." ".$felhasznalo['utonev']."!<br><br>
+                 Jó munkát kívánunk rendszerünkkel.<br><br>
+                 Az üzemeltetők";
+
+        } catch (PDOException $e) {
+            $retData['eredmeny'] = "ERROR";
+            $retData['uzenet'] = "Adatbázis hiba: " . $e->getMessage();
+        }
+
+        return $retData;
+    }
 }
 
 ?>

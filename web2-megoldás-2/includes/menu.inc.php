@@ -1,59 +1,51 @@
 <?php
 
-Class Menu {
+class Menu
+{
     public static $menu = array();
-    
+
+    // Menü betöltése adatbázisból
     public static function setMenu() {
-    self::$menu = array();
-    $connection = Database::getConnection();
+        self::$menu = array();
+        $connection = Database::getConnection();
 
-    if ($_SESSION['userid'] > 0) {
-        // BEJELENTKEZETT: látja a 000 és 111 menüpontokat is
-        $stmt = $connection->query(
-            "SELECT url, nev, szulo, jogosultsag 
-             FROM menu 
-             WHERE jogosultsag IN ('000', '111')
-             ORDER BY sorrend"
-        );
-    } else {
-        // VENDÉG: csak a 000 menüpontokat látja
-        $stmt = $connection->query(
-            "SELECT url, nev, szulo, jogosultsag 
-             FROM menu 
-             WHERE jogosultsag = '000'
-             ORDER BY sorrend"
-        );
-    }
-
-    while($menuitem = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        self::$menu[$menuitem['url']] = array(
-            $menuitem['nev'], 
-            $menuitem['szulo'], 
-            $menuitem['jogosultsag']
-        );
-    }
-    }   
-
-
-    public static function getMenu($sItems) {
-        $submenu = "";
-        
-        $menu = "<ul class=\"menu\">";
-        foreach(self::$menu as $menuindex => $menuitem)       
-        {
-            if($menuitem[1] == "")
-            { $menu.= "<li><a href='".SITE_ROOT.$menuindex."' ".($menuindex==$sItems[0]? "class='selected'":"").">".$menuitem[0]."</a></li>"; }
-            else if($menuitem[1] == $sItems[0])
-            { $submenu .= "<li><a href='".SITE_ROOT.$sItems[0]."/".$menuindex."' ".($menuindex==$sItems[1]? "class='selected'":"").">".$menuitem[0]."</a></li>"; }
+        // Ha be van jelentkezve → 000 + 111 menüpontok
+        if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0) {
+            $stmt = $connection->query(
+                "SELECT url, nev, szulo, jogosultsag 
+                 FROM menu 
+                 WHERE jogosultsag IN ('000', '111')
+                 ORDER BY sorrend"
+            );
+        } 
+        // Ha nincs bejelentkezve → csak 000 menüpontok
+        else {
+            $stmt = $connection->query(
+                "SELECT url, nev, szulo, jogosultsag 
+                 FROM menu 
+                 WHERE jogosultsag = '000'
+                 ORDER BY sorrend"
+            );
         }
-        $menu.="</ul>";
-        
-        if($submenu != "")
-            $submenu = "<ul class=\"menu\">".$submenu."</ul>";
-        
-        return $menu.$submenu;;
+
+        while($menuitem = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            self::$menu[$menuitem['url']] = array(
+                $menuitem['nev'], 
+                $menuitem['szulo'], 
+                $menuitem['jogosultsag']
+            );
+        }
+    }
+
+    // Menü HTML kiírása
+    public static function getMenu() {
+        echo '<ul>';
+        foreach(self::$menu as $url => $menuItem) {
+            echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
+        }
+        echo '</ul>';
     }
 }
-
 Menu::setMenu();
+
 ?>

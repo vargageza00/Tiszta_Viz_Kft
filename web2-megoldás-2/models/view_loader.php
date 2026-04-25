@@ -33,6 +33,7 @@ class View_Loader
         $this->data['selectedItems'] = $this->selectedItems;
         $this->data['style'] = $this->style;
         $viewData = $this->data;
+        $viewFile = $this->render;
         include(SERVER_ROOT . 'views/page_main.php');
     }
 }

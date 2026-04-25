@@ -1,35 +1,38 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>MVC - PHP</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo SITE_ROOT?>css/main_style.css">
-        <?php if($viewData['style']) echo '<link rel="stylesheet" type="text/css" href="'.$viewData['style'].'">'; ?>
-    </head>
-    <body>
-        <header>
-            <div id="user">
-                <?php if($_SESSION['userid'] > 0): ?>
-                 <em>Bejelentkezett: 
-                       <?= $_SESSION['userlastname'] . " " . $_SESSION['userfirstname'] ?>
-                      (<?= $_SESSION['loginname'] ?>)
-                 </em>
-                <?php endif; ?>
-            </div>
-            <h1 class="header">Tiszta Víz Kft. – Munkalapkezelő Rendszer</h1>
-        </header>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiszta Víz Kft. – Munkalapkezelő rendszer</title>
+    <link rel="stylesheet" href="<?= SITE_ROOT ?>css/main_style.css">
+</head>
 
-        <nav>
-            <?php echo Menu::getMenu($viewData['selectedItems']); ?>
-        </nav>
-        <aside>
-            <a href="https://www.uni-neumann.hu" target="_blank" style="background-color:white; padding:0;"><img src="<?=SITE_ROOT?>\images\nje.png" width="150"></a><br>
-            <a href="https://neptun.uni-neumann.hu" target="_blank" style="background-color:white; padding:0;"><img src="<?=SITE_ROOT?>\images\neptun.png" width="150"></a><br>
-            <a href="https://gamf.uni-neumann.hu" target="_blank" style="background-color:white; padding:0;"><img src="<?=SITE_ROOT?>\images\gamf.png" width="150"></a><br>
-        </aside>
-        <section>
-            <?php if($viewData['render']) include($viewData['render']); ?>
-        </section>
-        <footer>&copy; NJE - GAMF - Informatika Tanszék <?= date("Y") ?></footer>
-    </body>
+<body>
+
+<header>
+    <div class="user-info">
+        <?php if($_SESSION['userid'] > 0): ?>
+            <span>Bejelentkezett: 
+                <?= $_SESSION['userlastname'] . " " . $_SESSION['userfirstname'] ?>
+                (<?= $_SESSION['loginname'] ?>)
+            </span>
+        <?php endif; ?>
+    </div>
+
+    <h1>Tiszta Víz Kft. – Munkalapkezelő rendszer</h1>
+</header>
+
+<nav>
+    <?php Menu::getMenu(); ?>
+</nav>
+
+<main>
+    <?php include($viewFile); ?>
+</main>
+
+<footer>
+    <p>&copy; <?= date("Y") ?> Tiszta Víz Kft.</p>
+</footer>
+
+</body>
 </html>

@@ -1,47 +1,254 @@
-header, footer {
-    padding: 0.5em; 
-    color: white;
-    background-color: gray;
-    clear: left;
-}
-h1.header {
+/* RESET – minden böngészőben egységes alap */
+* {
+    margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+/* ALAP STÍLUSOK */
+body {
+    font-family: Arial, sans-serif;
+    background: #eef3f7;
+    color: #222;
+    line-height: 1.5;
+}
+
+/* FEJLÉC */
+header {
+    background: #0077cc;
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+    border-bottom: 4px solid #005fa3;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    margin-top: 10px;
+}
+
+.user-info {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* MENÜ – vízszintes, reszponzív */
+nav {
+    background: #005fa3;
+    border-bottom: 3px solid #004b82;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav li {
     margin: 0;
 }
-#user {
-    float: right;
+
+nav a {
+    display: block;
+    padding: 14px 22px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
 }
-aside {
-    display: table-cell;
-    width: 160px;
-    margin: 0;
-    padding: 1em;
+
+nav a:hover {
+    background: #003f6d;
 }
-section {
-    display: table-cell;
-    border-left: 1px solid gray;
-    padding: 1em;
-    vertical-align: top;
+
+/* TARTALOM */
+main {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
-ul.menu {
-    float:left;
-    width:100%; /* A menü az alatta levő szövegtől elválik, birtokolja a teljes vízszintes sávját. */
-    padding:0;
-    margin:0;
-    list-style-type:none;
-    background-color: lightblue;
-}        
-ul.menu a {
-    float:left;
-    width:6em; /* Fix szélességű gombok érhetők el. Érdemes azonban vigyázni ezzel a módszerrel, mert ha a szöveg nem fér ki, a dizájn szétesik. */
-    text-decoration:none; /* Ne legyen aláhúzva a link. */
-    color:white;
-    background-color:navy;
-    padding:0.2em 0.6em;
-    border-right:1px solid white;
+
+/* LÁBLÉC */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #0077cc;
+    color: white;
+    margin-top: 30px;
+    border-top: 4px solid #005fa3;
 }
-ul.menu a.selected{
-    background-color: blue;
+
+/* FORMOK */
+label {
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+    margin-bottom: 6px;
 }
-ul.menu a:hover { background-color:#ff3300} /* Az egérkurzorra színváltással reagál a menüpont. */
-ul.menu li { display:inline } /* Ez a sor oldja meg, hogy a menüpontok egymás mellé kerüljenek. */
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    max-width: 350px;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"],
+button {
+    background: #0077cc;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background: #005fa3;
+}
+
+/* TÁBLÁZATOK */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+table th {
+    background: #0077cc;
+    color: white;
+}
+
+/* MOBIL NÉZET */
+@media (max-width: 700px) {
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav a {
+        text-align: center;
+        padding: 12px;
+    }
+
+    label {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+        max-width: 100%;
+    }
+
+    main {
+        margin: 10px;
+        padding: 15px;
+    }
+}
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 arány */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.map-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 arány */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+}
+
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* Kétoszlopos főoldal */
+.home-columns {
+    display: flex;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.home-left,
+.home-right {
+    flex: 1;
+}
+
+/* Bal oldali szöveg */
+.home-left h2 {
+    margin-bottom: 15px;
+    color: #005fa3;
+}
+
+.home-left p {
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* Mobil nézet */
+@media (max-width: 900px) {
+    .home-columns {
+        flex-direction: column;
+    }
+}
+.form-box {
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.form-box input[type="text"],
+.form-box input[type="email"],
+.form-box input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.msg-box {
+    margin-top: 15px;
+    padding: 12px;
+    background: #e8f4ff;
+    border-left: 4px solid #0077cc;
+    border-radius: 4px;
+}
