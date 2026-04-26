@@ -33,7 +33,22 @@ class Kepek_Model
         }
 
         // 4) Új fájlnév
-        $newName = time() . "_" . basename($file['name']);
+        //$newName = time() . "_" . basename($file['name']);
+        $orig = basename($file['name']);
+
+        // 1) Ékezetek eltávolítása kézzel
+        $orig = strtr($orig, [
+        'á'=>'a','é'=>'e','í'=>'i','ó'=>'o','ö'=>'o','ő'=>'o','ú'=>'u','ü'=>'u','ű'=>'u',
+        'Á'=>'A','É'=>'E','Í'=>'I','Ó'=>'O','Ö'=>'O','Ő'=>'O','Ú'=>'U','Ü'=>'U','Ű'=>'U'
+        ]);
+
+        // 2) Minden nem engedélyezett karakter cseréje _
+        $orig = preg_replace('/[^A-Za-z0-9._-]/', '_', $orig);
+
+        // 3) Új fájlnév
+        $newName = time() . "_" . $orig;
+
+
         $targetPath = $targetDir . $newName;
 
         // 5) Fájl mozgatása

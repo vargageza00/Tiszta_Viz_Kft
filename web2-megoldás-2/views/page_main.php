@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiszta Víz Kft. – Munkalapkezelő rendszer</title>
     <link rel="stylesheet" href="<?= SITE_ROOT ?>css/main_style.css">
+    <?php if (!empty($style)): ?>
+        <link rel="stylesheet" href="<?= $style ?>">
+    <?php endif; ?>
+
 </head>
 
 <body>
@@ -27,6 +31,7 @@
 </nav>
 
 <main>
+    <?php extract($viewData); ?>
     <?php include($viewFile); ?>
 </main>
 
