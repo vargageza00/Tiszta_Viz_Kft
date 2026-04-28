@@ -62,7 +62,7 @@ class Kepek_Model
     }
 
     public function listImages()
-{
+    {
     $retData = [];
 
     $dir = SERVER_ROOT . "uploads/";
@@ -77,10 +77,29 @@ class Kepek_Model
         }
         closedir($handle);
     }
-
+    
     $retData['kepek'] = $files;
     return $retData;
-}
+    }
+
+    public function deleteImage($filename)
+    {
+    $retData = [];
+
+    $path = SERVER_ROOT . "uploads/" . $filename;
+
+    if (file_exists($path)) {
+        if (unlink($path)) {
+            $retData['uzenet'] = "A kép törlése sikeres volt.";
+        } else {
+            $retData['uzenet'] = "Nem sikerült törölni a képet!";
+        }
+    } else {
+        $retData['uzenet'] = "A fájl nem található!";
+    }
+
+    return $retData;
+    }
 
 }
 ?>

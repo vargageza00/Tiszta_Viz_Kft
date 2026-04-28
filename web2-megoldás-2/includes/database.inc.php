@@ -1,20 +1,22 @@
 <?php
-    define('HOST', 'localhost');
-    define('DATABASE', 'web2');
-    define('USER', 'root');
-    define('PASSWORD', '');
+    define('HOST', 'idbp.omega.c-host.hu');
+    define('DATABASE', 'web1_la02');
+    define('USER', 'web1_la02');
+    define('PASSWORD', 'weblapjelszo123456789');
     
     class Database {
-        private static $connection = FALSE;
+        public static $connection = FALSE;
         
         public static function getConnection() {
-            if(! self::$connection) {
-                self::$connection = new PDO('mysql:host='.HOST.';dbname='.DATABASE, USER, PASSWORD,
-                      array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
-                self::$connection->query('SET NAMES utf8 COLLATE utf8_hungarian_ci');
+            if (!self::$connection) {
+               self::$connection = new PDO(
+    'mysql:host=' . HOST . ';port=3306;dbname=' . DATABASE . ';charset=utf8',
+    USER,
+    PASSWORD,
+    array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+);
             }
             return self::$connection;
         }
     }
-
 ?>

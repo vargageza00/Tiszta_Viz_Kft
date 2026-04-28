@@ -8,25 +8,38 @@ class Menu
     public static function setMenu() {
         self::$menu = array();
         $connection = Database::getConnection();
+       if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0) {
 
-        // Ha be van jelentkezve → 000 + 111 menüpontok
-        if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0) {
-            $stmt = $connection->query(
-                "SELECT url, nev, szulo, jogosultsag 
-                 FROM menu 
-                 WHERE jogosultsag IN ('000', '111')
-                 ORDER BY sorrend"
-            );
-        } 
-        // Ha nincs bejelentkezve → csak 000 menüpontok
-        else {
-            $stmt = $connection->query(
-                "SELECT url, nev, szulo, jogosultsag 
-                 FROM menu 
-                 WHERE jogosultsag = '000'
-                 ORDER BY sorrend"
-            );
-        }
+    // ADMIN
+    if (isset($_SESSION['admin']) && $_SESSION['admin'] == 1) {
+        $stmt = $connection->query(
+            "SELECT url, nev, szulo, jogosultsag 
+             FROM menu 
+             WHERE jogosultsag IN ('000', '111', '999')
+             ORDER BY sorrend"
+        );
+    }
+    // SIMA FELHASZNÁLÓ
+    else {
+        $stmt = $connection->query(
+            "SELECT url, nev, szulo, jogosultsag 
+             FROM menu 
+             WHERE jogosultsag IN ('000', '111')
+             ORDER BY sorrend"
+        );
+    }
+    
+
+       }
+// NINCS BEJELENTKEZVE
+else {
+    $stmt = $connection->query(
+        "SELECT url, nev, szulo, jogosultsag 
+         FROM menu 
+         WHERE jogosultsag = '000'
+         ORDER BY sorrend"
+    );
+}
 
         while($menuitem = $stmt->fetch(PDO::FETCH_ASSOC)) {
             self::$menu[$menuitem['url']] = array(
@@ -38,13 +51,26 @@ class Menu
     }
 
     // Menü HTML kiírása
+    // public static function getMenu() {
+    //     echo '<ul>';
+    //     foreach(self::$menu as $url => $menuItem) {
+    //         echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
+    //     }
+    //     echo '</ul>';
+    // }
     public static function getMenu() {
-        echo '<ul>';
-        foreach(self::$menu as $url => $menuItem) {
-            echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
+    echo '<ul>';
+    foreach(self::$menu as $url => $menuItem) {
+
+        // BEJELENTKEZÉS ELREJTÉSE, HA BE VAN JELENTKEZVE
+        if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && $url === 'belepes') {
+            continue;
         }
-        echo '</ul>';
+
+        echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
     }
+    echo '</ul>';
+}
 }
 Menu::setMenu();
 

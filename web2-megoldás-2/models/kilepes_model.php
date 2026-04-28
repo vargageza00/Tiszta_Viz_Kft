@@ -6,10 +6,8 @@ class Kilepes_Model
 	{
 		$retData['eredmény'] = "OK";
 		$retData['uzenet'] = "Visszontlátásra kedves ".$_SESSION['userlastname']." ".$_SESSION['userfirstname']."!";
-		$_SESSION['userid'] =  0;
-		$_SESSION['userlastname'] =  "";
-		$_SESSION['userfirstname'] =  "";
-		$_SESSION['userlevel'] = "1__";
+		session_unset();
+        session_destroy();
 		Menu::setMenu();
 		return $retData;
 	}
