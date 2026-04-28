@@ -5,12 +5,34 @@
     </div>
 <?php endif; ?>
 <form method="post">
-    Beadás dátuma: <input type="date" name="bedatum"><br><br>
-    Javítás dátuma: <input type="date" name="javdatum"><br><br>
-    Munkaóra: <input type="number" name="munkaora"><br><br>
-    Hely AZ: <input type="number" name="helyaz"><br><br>
-    Szerelő AZ: <input type="number" name="szereloaz"><br><br>
-    Anyagár: <input type="number" name="anyagar"><br><br>
+    <br><br>
+    <label>Beadás dátuma:</label><input type="date" name="bedatum"><br><br>
+    <label>Javítás dátuma:</label><input type="date" name="javdatum"><br><br>
+    <label>Munkaóra: </label><input type="number" name="munkaora"><br><br>
+    <label>Anyagár:</label><input type="number" name="anyagar"><br><br>
+    <div class="form-row">
+    <label>Hely:</label>
+    <select name="helyaz" class="form-select">
+        <?php foreach ($viewData['helyek'] as $hely): ?>
+            <option value="<?= $hely['az'] ?>">
+                <?= $hely['telepules'] . ' ' . $hely['utca'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    </div>
+    
+    <div class="form-row">
+    <label>Szerelő:</label>
+    <select name="szereloaz" class="form-select">
+        <?php foreach ($viewData['szerelok'] as $sz): ?>
+            <option value="<?= $sz['az'] ?>">
+                <?= $sz['vezeteknev'] . ' ' . $sz['keresztnev'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    </div>
+    
+    
 
     <input type="submit" value="Mentés">
 </form>

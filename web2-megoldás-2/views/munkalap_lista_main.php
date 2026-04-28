@@ -1,3 +1,4 @@
+<div style="overflow-x:auto;">
 <table border="1">
     <tr>
         <th>ID</th>
@@ -27,7 +28,7 @@
                 <?php if ($_SESSION['jog'] == '999'): ?>
                     <a href="index.php?munkalap_torles/<?= $sor['id'] ?>">Törlés</a>
                 <?php endif; ?>
-                <?php if ($_SESSION['jog'] == '111'): ?>
+                <?php if ($_SESSION['jog'] == '111' || $_SESSION['jog'] == ''): ?>
                     <a style="display:block; text-align:center;">Nincs jogosultsága!</a>
                 <?php endif; ?>
 
@@ -40,3 +41,4 @@
 <?php if ($_SESSION['jog'] == '999' || $_SESSION['jog'] == 'szerelo'): ?>
 <a href="index.php?munkalap_uj">Új munkalap</a>
 <?php endif; ?>
+</div>

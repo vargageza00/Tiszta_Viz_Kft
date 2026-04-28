@@ -6,24 +6,25 @@
 <?php endif; ?>
 <form method="post">
     <input type="hidden" name="id" value="<?= $viewData['adat']['id'] ?>">
-
-    Beadás dátuma: <input type="date" name="bedatum" value="<?= $viewData['adat']['bedatum'] ?>"><br><br>
-    Javítás dátuma: <input type="date" name="javdatum" value="<?= $viewData['adat']['javdatum'] ?>"><br><br>
-    Munkaóra: <input type="number" name="munkaora" value="<?= $viewData['adat']['munkaora'] ?>"><br><br>
-    Hely AZ:
-    Hely:
-<select name="helyaz">
+    <br><br>
+    <label>Beadás dátuma:</label><input type="date" name="bedatum" value="<?= $viewData['adat']['bedatum'] ?>"><br><br>
+    <label>Javítás dátuma:</label><input type="date" name="javdatum" value="<?= $viewData['adat']['javdatum'] ?>"><br><br>
+    <label>Munkaóra:</label><input type="number" name="munkaora" value="<?= $viewData['adat']['munkaora'] ?>"><br><br>
+    <label>Anyagár:</label><input type="number" name="anyagar" value="<?= $viewData['adat']['anyagar'] ?>"><br><br>
+    <div class="form-row">
+    <label>Hely:</label>
+    <select name="helyaz" class="form-select">
     <?php foreach ($viewData['helyek'] as $hely): ?>
         <option value="<?= $hely['az'] ?>"
             <?= ($hely['az'] == $viewData['adat']['helyaz']) ? 'selected' : '' ?>>
             <?= $hely['telepules'] . " - " . $hely['utca'] ?>
         </option>
     <?php endforeach; ?>
-</select>
-<br><br>
-
-    Szerelő AZ: 
-    <<select name="szereloaz">
+    </select>
+    </div>
+    <div class="form-row">
+    <label>Szerelő:</label> 
+    <select name="szereloaz" class="form-select">
         <?php foreach ($viewData['szerelok'] as $sz): ?>
             <option value="<?= $sz['az'] ?>"
                 <?= ($sz['az'] == $viewData['adat']['szereloaz']) ? 'selected' : '' ?>>
@@ -31,8 +32,9 @@
             </option>
         <?php endforeach; ?>
     </select>
+    </div>
     <br><br>
-    Anyagár: <input type="number" name="anyagar" value="<?= $viewData['adat']['anyagar'] ?>"><br><br>
+    
 
     <input type="submit" value="Módosítás">
 </form>

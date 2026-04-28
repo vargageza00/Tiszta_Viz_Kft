@@ -1,17 +1,18 @@
 <link rel="stylesheet" href="<?= SITE_ROOT ?>css/kepek_main.css">
 
+<?php if ($_SESSION['jog'] == '999' || $_SESSION['jog'] == 'szerelo'): ?>                               
 <h2>Képfeltöltés</h2>
 <?php if (isset($uzenet)) : ?>
     <p><?= $uzenet ?></p>
 <?php endif; ?>
-
 <form method="POST" enctype="multipart/form-data">
     <label>Kép kiválasztása:</label>
     <input type="file" name="kep" required>
     <button type="submit">Feltöltés</button>
 </form>
-
 <hr>
+<?php endif; ?>
+
 
 <h2>Feltöltött képek</h2>
 <div class="gallery">
