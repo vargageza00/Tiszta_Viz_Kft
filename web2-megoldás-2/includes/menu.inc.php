@@ -28,8 +28,9 @@ class Menu
              ORDER BY sorrend"
         );
     }
+    
 
-}
+       }
 // NINCS BEJELENTKEZVE
 else {
     $stmt = $connection->query(
@@ -50,13 +51,26 @@ else {
     }
 
     // Menü HTML kiírása
+    // public static function getMenu() {
+    //     echo '<ul>';
+    //     foreach(self::$menu as $url => $menuItem) {
+    //         echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
+    //     }
+    //     echo '</ul>';
+    // }
     public static function getMenu() {
-        echo '<ul>';
-        foreach(self::$menu as $url => $menuItem) {
-            echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
+    echo '<ul>';
+    foreach(self::$menu as $url => $menuItem) {
+
+        // BEJELENTKEZÉS ELREJTÉSE, HA BE VAN JELENTKEZVE
+        if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && $url === 'belepes') {
+            continue;
         }
-        echo '</ul>';
+
+        echo '<li><a href="'.SITE_ROOT.$url.'">'.$menuItem[0].'</a></li>';
     }
+    echo '</ul>';
+}
 }
 Menu::setMenu();
 

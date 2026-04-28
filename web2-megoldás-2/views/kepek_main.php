@@ -23,7 +23,7 @@
                  class="zoomable"
                  data-img="<?= SITE_ROOT ?>uploads/<?= $kep ?>">
 
-            <?php if (isset($_SESSION['userid']) && $_SESSION['userid'] > 0): ?>
+            <?php if ($_SESSION['jog'] == '999' || $_SESSION['jog'] == 'szerelo'): ?>
                 <form method="POST" class="delete-form">
                     <input type="hidden" name="torol" value="<?= $kep ?>">
                     <button type="submit" class="delete-btn"

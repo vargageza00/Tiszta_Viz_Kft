@@ -5,7 +5,7 @@ class Kepek_Controller
 
 public function main(array $vars)
 {
-    session_start();
+    //session_start();
     include_once(SERVER_ROOT.'models/kepek_model.php');
     $model = new Kepek_Model;
 
