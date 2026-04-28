@@ -3,33 +3,49 @@ class Kepek_Controller
 {
     public $baseName = 'kepek';
 
-    public function main(array $vars)
-    {
-        include_once(SERVER_ROOT.'models/kepek_model.php');
-        $model = new Kepek_Model;
+public function main(array $vars)
+{
+    session_start();
+    include_once(SERVER_ROOT.'models/kepek_model.php');
+    $model = new Kepek_Model;
 
-        $data = [];
+    $data = [];
+    $isLoggedIn = isset($_SESSION['userid']) && $_SESSION['userid'] > 0;
 
-        // Feltöltés
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = $model->upload($_FILES);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        // TÖRLÉS
+        if (isset($_POST['torol'])) {
+            if ($isLoggedIn) {
+                $data = $model->deleteImage($_POST['torol']);
+            } else {
+                $data['uzenet'] = "A törléshez be kell jelentkezni!";
+            }
         }
 
-        // Képek listázása
-        $listData = $model->listImages();
-
-        // A listázás eredményét is hozzáadjuk
-        $data = array_merge($data, $listData);
-
-        // View betöltése — MOST már csak itt!
-        $view = new View_Loader($this->baseName.'_main');
-
-        // MINDEN adat átadása
-        foreach($data as $name => $value) {
-            $view->assign($name, $value);
+        // FELTÖLTÉS
+        elseif (isset($_FILES['kep'])) {
+            if ($isLoggedIn) {
+                $data = $model->upload($_FILES);
+            } else {
+                $data['uzenet'] = "A feltöltéshez be kell jelentkezni!";
+            }
         }
-        unset($view);
     }
+
+    // Képek listázása
+    $listData = $model->listImages();
+    $data = array_merge($data, $listData);
+
+    // View betöltése
+    $view = new View_Loader($this->baseName.'_main');
+
+    foreach($data as $name => $value) {
+        $view->assign($name, $value);
+    }
+    unset($view);
+}
+
     
 }
 
