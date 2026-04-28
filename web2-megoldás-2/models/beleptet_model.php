@@ -38,6 +38,7 @@ class Beleptet_Model
             $_SESSION['userfirstname'] = $felhasznalo['utonev'];
             $_SESSION['loginname']     = $felhasznalo['bejelentkezes'];
             $_SESSION['userlevel']     = $felhasznalo['jogosultsag'];
+            $_SESSION['admin'] = $felhasznalo[0]['admin'];
 
             // Menü frissítése
             Menu::setMenu();
